@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   redirect: "http://localhost:4200/login",
-  clientId: "21312312"
+  clientId: "21312312",
+  clientSecret: "asdasdasd"
 
 };
 

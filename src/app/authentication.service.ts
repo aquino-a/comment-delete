@@ -12,9 +12,10 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   
   private clientId = environment.clientId;
+  private clientSecret = environment.clientSecret;
   private tokenUrl = "https://www.reddit.com/api/v1/access_token";
   private meUrl = "https://www.reddit.com/api/v1/me";
-  redirect = environment.redirect;
+  private redirect = environment.redirect;
   accessToken: string;
   currentUser: User;
 
@@ -39,24 +40,12 @@ export class AuthenticationService {
   }
 
   authenticate(code: string) {
-    const body = { 
-      grant_type: 'authorization_code',
-      code: code,
-      redirect_uri: this.redirect
-    };
-    // const body = new FormData();
-    // body.append('grant_type', 'authorization_code')
-    // body.append('code', code)
-    // body.append('redirect_uri', this.redirect);
+    const body = `grant_type=authorization_code&code=${code}&redirect_uri=${this.redirect}`;
 
-    this.http.post<TokenResponse>(this.tokenUrl, JSON.stringify(body),
+    this.http.post<TokenResponse>(this.tokenUrl, body,
       {
-        // params: new HttpParams()
-        //     .set('grant_type', 'authorization_code')
-        //     .set('code', code)
-        //     .set('redirect_uri', this.redirect),
         headers: new HttpHeaders()
-            .set('Authorization', 'Basic ' + btoa(this.clientId + ':g_BKujiD8cCOhAtaGWinMPbEjOd4Zw'))
+            .set('Authorization', 'Basic ' + btoa(this.clientId + ':' + this.clientSecret))
             .set('Content-Type', 'application/x-www-form-urlencoded')
       })
       .subscribe(tr =>{
@@ -87,6 +76,9 @@ export interface TokenResponse{
   expires_in: string;
   scope: string;
 }
+// export interface TokenResponse{
+//   token: string;
+// }
 
 export interface User {
   username: string;

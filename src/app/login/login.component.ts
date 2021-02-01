@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.loginUrl.searchParams.set("duration", "temporary");
     this.loginUrl.searchParams.set("scope", "read,edit");
 
-    window.open(this.loginUrl.href);
+    window.open(this.loginUrl.href, "_self");
   }
 
 }
