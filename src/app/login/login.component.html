@@ -1,2 +1,9 @@
 <p>login works!</p>
-<a (click)="login()">Login</a>
+<div *ngIf="auth.accessToken; else loggedInBlock">
+    <p>Logged in!</p>
+    <p>Token: {{auth.accessToken}}</p>
+</div>
+<ng-template #loggedInBlock>
+    <a (click)="login()">Login</a>
+</ng-template>
+

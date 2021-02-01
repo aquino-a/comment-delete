@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../service/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   private state;
 
-  constructor(private activatedRoute: ActivatedRoute, private authenticationService: AuthenticationService ) {
+  constructor(private activatedRoute: ActivatedRoute, public auth: AuthenticationService ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
           const code = params['code'];
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
           console.log(this.state);
 
           console.log(code); // Print the parameter to the console. 
-          this.authenticationService.authenticate(code);
+          auth.authenticate(code);
       });
 
   }
@@ -37,6 +37,10 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
+    if(this.auth.isAuthenticated){
+      return;
+    }
+
     this.loginUrl.searchParams.set("client_id", this.clientId);
     this.loginUrl.searchParams.set("response_type", 'code');
     this.state = Math.floor(Math.random() * 9999);
