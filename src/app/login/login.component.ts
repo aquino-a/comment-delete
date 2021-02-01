@@ -19,6 +19,9 @@ export class LoginComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, public auth: AuthenticationService ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
+          if(this.auth.isAuthenticated()){
+            return;
+          }
           const code = params['code'];
           if(code == null || code == undefined){
             return;
@@ -37,7 +40,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    if(this.auth.isAuthenticated){
+    if(this.auth.isAuthenticated()){
       return;
     }
 
@@ -47,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.loginUrl.searchParams.set("state", this.state);
     this.loginUrl.searchParams.set("redirect_uri", this.redirect);
     this.loginUrl.searchParams.set("duration", "temporary");
-    this.loginUrl.searchParams.set("scope", "read,edit");
+    this.loginUrl.searchParams.set("scope", "read,edit,identity");
 
     window.open(this.loginUrl.href, "_self");
   }

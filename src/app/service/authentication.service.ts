@@ -13,9 +13,10 @@ export class AuthenticationService {
   
   private clientId = environment.clientId;
   private clientSecret = environment.clientSecret;
-  private tokenUrl = "https://www.reddit.com/api/v1/access_token";
-  private meUrl = "https://www.reddit.com/api/v1/me";
   private redirect = environment.redirect;
+
+  private tokenUrl = "https://www.reddit.com/api/v1/access_token";
+  private meUrl = "https://oauth.reddit.com/api/v1/me";
   accessToken: string;
   currentUser: User;
 
@@ -34,10 +35,12 @@ export class AuthenticationService {
     return new Promise((resolve) =>{
       if(localStorage.token != null){
         this.accessToken = localStorage.token;
+        this.setUser(this.accessToken);
       }
       resolve(null);
     }).catch(error => console.log(error));
   }
+
 
   authenticate(code: string) {
     const body = `grant_type=authorization_code&code=${code}&redirect_uri=${this.redirect}`;
@@ -54,14 +57,27 @@ export class AuthenticationService {
         this.setUser(this.accessToken);
       }, error => {
         console.log(error); 
-        this.accessToken = null;
+        this.clearToken();
       });
   }
 
-  
+
   setUser(accessToken: string) {
-    this.http.get(this.meUrl)
-      .subscribe(o => console.log(o));
+    this.http.get<User>(this.meUrl)
+      .subscribe(u => {
+        console.log(u);
+        this.currentUser = u;
+      }, error => {
+        this.clearToken();
+        console.log(error);
+      });
+  }
+
+
+  clearToken() {
+    this.currentUser = null;
+    this.accessToken = null;
+    localStorage.removeItem('token');
   }
 
   isAuthenticated() {
@@ -69,6 +85,8 @@ export class AuthenticationService {
   }
 
 }
+
+
 
 export interface TokenResponse{
   access_token: string;
@@ -81,7 +99,9 @@ export interface TokenResponse{
 // }
 
 export interface User {
-  username: string;
+  name: string;
+  icon_img: string;
+  id: string;
 }
 ``
 
