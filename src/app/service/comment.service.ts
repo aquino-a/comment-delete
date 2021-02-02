@@ -16,50 +16,19 @@ export class CommentService {
   private deletedComments: Comment[] = [];
 
 
-  private newCommentSource = new BehaviorSubject<Comment>(null);
-  newComment$ = this.newCommentSource.asObservable();
-  
-
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
-  deleteAll(){
-    // var comments = this.getComments(this.auth.currentUser.name);
-    // comments.subscribe(cs =>{
-    //   cs.forEach(c => {
-    //     try {
-    //       this.deleteComment(c);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   })
-    // }) 
-  }
-
-
-  deleteComment(c: Comment): Observable<Comment> {
+  deleteComment(c: Comment = this.comments.shift()): Observable<Comment> {
     var ob = this.http.post(this.redditUrl + this.deleteUrl, null, {
       params: new HttpParams()
                 .set('id', c.id)
     }).pipe(map(o => c));
-    ob.subscribe(c => console.log(o), error => console.log(error));
+    ob.subscribe(c => {
+      c.isDeleted = true;
+      this.deletedComments.unshift(c);
+    }, error => console.log(error));
     return ob;
   }
-
-  delete(count: number) {
-    for (let i = 0; i < count; i++) {
-      var shifted = this.comments.shift();
-      this.deleteComment(shifted)
-        .subscribe(c => {
-          c.isDeleted = true;
-          this.deletedComments.unshift(c);
-        }, error => {
-          this.comments.unshift(shifted);
-          console.log(error);
-        });
-    }
-    throw new Error('Method not implemented.');
-  }
- 
 
 
   getComments(username = this.auth.currentUser.name): Comment[] {
@@ -86,7 +55,7 @@ export class CommentService {
 
 
   getDeletedComments(): Comment[] {
-    throw new Error('Method not implemented.');
+    return this.deletedComments;
   }
 
 

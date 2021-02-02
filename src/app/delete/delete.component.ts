@@ -20,31 +20,14 @@ export class DeleteComponent implements OnInit {
 
   delete(count: number): void{
     count = Number(count);
-    this.comment.delete(count);
-    // for (let i = 0; i < count; i++) {
-    //   var shifted = this.comments.shift();
-    //   this.comment.deleteComment(shifted)
-    //     .subscribe(c => {
-    //       c.isDeleted = true;
-    //       this.deletedComments.unshift(c);
-    //     }, error => {
-    //       this.comments.unshift(shifted);
-    //       console.log(error);
-    //     });
-    // }
+    for (let i = 0; i < count; i++) {
+      this.comment.deleteComment();
+    }
   }
 
   getComments(){
     this.comments = this.comment.getComments();
     this.deletedComments = this.comment.getDeletedComments();
-    // this.comment.getComments().subscribe(cs => {
-    //   if(this.comments == null){
-    //     this.comments = cs;
-    //   }
-    //   else {
-    //     this.comments.concat(cs);
-    //   }
-    // });
   }
 }
 
