@@ -44,7 +44,13 @@ export class CommentService {
                     .set("after", this.comments.length > 0 ? this.comments[this.comments.length - 1].id : "")
       }).pipe(map(d =>{
         return d.data.children.map(l => {
-          return { id: l.data.name, text: l.data.body, time: new Date(l.data.created_utc) }
+          return { 
+            id: l.data.name, 
+            text: l.data.body, 
+            score: Number(l.data.score),
+            subreddit: l.data.subreddit,
+            time: new Date(l.data.created_utc) 
+          }
         });
       })).subscribe(cs => {
         this.comments.push(...cs);
@@ -66,6 +72,8 @@ export interface Comment {
   id: string;
   text: string;
   time: Date;
+  score: Number;
+  subreddit: string;
   isDeleted: boolean;
 }
 
