@@ -8,12 +8,21 @@
 
 .comments-section {
     flex: 1;
-    overflow-y: auto;
-    max-height: 80vh;
+    
 }
 
 .comment {
     background-color: azure;
     padding: .5em;
     margin: .5em;
+}
+
+.count {
+    padding: 1em;
+    margin: 2px;
+}
+
+.comments {
+    overflow-y: auto;
+    max-height: 80vh;
 }
