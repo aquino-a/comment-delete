@@ -30,12 +30,13 @@ export class CommentService {
   }
 
 
-  deleteComment(c: Comment) {
-    this.http.post(this.redditUrl + this.deleteUrl, null, {
+  deleteComment(c: Comment): Observable<Comment> {
+    var ob = this.http.post(this.redditUrl + this.deleteUrl, null, {
       params: new HttpParams()
                 .set('id', c.id)
-    })
-    .subscribe(o => console.log(o), error => console.log(error));
+    }).pipe(map(o => c));
+    ob.subscribe(o => console.log(o), error => console.log(error));
+    return ob;
   }
 
 
@@ -53,8 +54,6 @@ export class CommentService {
       var comments =d.data.children.map(l => {
         return { id: l.data.name, text: l.data.body, time: new Date(l.data.created_utc) }
       });
-      console.log(d);
-      console.log(comments);
       return comments;
     }));
   }
@@ -66,6 +65,7 @@ export interface Comment {
   id: string;
   text: string;
   time: Date;
+  isDeleted: boolean;
 }
 
 

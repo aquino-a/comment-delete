@@ -1,5 +1,18 @@
 <div class="delete-container">
-    <div *ngFor='let comment of comments'>
-        <app-comment [comment] = "comment"></app-comment>
-    </div>   
+    <div class="delete-options">
+        <input type="number" #count/>
+        <button (click)="delete(count.value)">Delete</button>
+    </div>
+    <div class="comment-container">
+        <div class="comments-section">
+            <div *ngFor='let comment of comments' >
+                <app-comment [comment] = "comment"></app-comment>
+            </div>
+        </div>
+        <div class="comments-section">
+            <div *ngFor='let comment of deletedComments' >
+                <app-comment [comment] = "comment"></app-comment>
+            </div>
+        </div>
+    </div>
 </div>

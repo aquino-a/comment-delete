@@ -34,10 +34,12 @@ export class AuthenticationService {
 
   load(): Promise<any> {
     return new Promise((resolve) =>{
-      if(localStorage.token != null){
-        this.accessToken = localStorage.token;
-        this.setUser(this.accessToken).subscribe(u => resolve(null));
+      if(localStorage.token == null || localStorage.token == undefined){
+        resolve(null);
       }
+      
+      this.accessToken = localStorage.token;
+      this.setUser(this.accessToken).subscribe(u => resolve(null), error => { this.clearToken(); resolve(null); });
     }).catch(error => console.log(error));
   }
 

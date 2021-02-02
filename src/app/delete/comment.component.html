@@ -1,4 +1,4 @@
-<div class="comment">
+<div class="comment" [ngStyle]="{'background-color': comment.isDeleted ? 'coral' : 'azure'}">
     <br/>
     <label>{{comment.time.toUTCString()}}</label>
     <p>{{comment.text}}</p>

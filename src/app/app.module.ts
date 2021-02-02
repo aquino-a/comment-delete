@@ -9,6 +9,7 @@ import { AuthGuard } from './auth.guard';
 import { AuthenticationService } from './service/authentication.service';
 import { AuthenticationInterceptor } from './interceptor/authentication.interceptor';
 import { CommentComponent, DeleteComponent } from './delete/delete.component';
+import { FormsModule } from '@angular/forms';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
@@ -24,7 +25,8 @@ export const httpInterceptorProviders = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     AuthGuard,

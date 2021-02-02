@@ -1,5 +1,15 @@
 .delete-container{
-    /* padding: 30px; */
+    padding: 30px;
+}
+
+.comment-container {
+    display: flex;
+}
+
+.comments-section {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 80vh;
 }
 
 .comment {
