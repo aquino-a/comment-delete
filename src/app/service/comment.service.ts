@@ -2,29 +2,34 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './authentication.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  private redditUrl = 'https://reddit.com'
+  private redditUrl = 'https://oauth.reddit.com'
   private deleteUrl = '/api/del';
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
   deleteAll(){
-    var comments = this.getComments(this.auth.currentUser.username);
-    comments.forEach(c => {
-      try {
-        this.deleteComment(c);
-      } catch (error) {
-        console.log(error);
-      }
-    })
-
+    var comments = this.getComments(this.auth.currentUser.name);
+    comments.subscribe(cs =>{
+      cs.forEach(c => {
+        try {
+          this.deleteComment(c);
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    }) 
   }
+
+
   deleteComment(c: Comment) {
     this.http.post(this.redditUrl + this.deleteUrl, null, {
       params: new HttpParams()
@@ -33,15 +38,36 @@ export class CommentService {
     .subscribe(o => console.log(o), error => console.log(error));
   }
 
-  getComments(username: string): Comment[] {
-    this.http.get<Comment>(this.redditUrl + '/user/${username}/comments', {
+
+  getComments(username = this.auth.currentUser.name, after = ""): Observable<Comment[]> {
+    return this.http.get<any>(this.redditUrl + '/user/${username}/comments', {
       params: new HttpParams()
-                  .set("dsd","asdsd")
-    });
-    throw new Error('Method not implemented.');
+                  .set("context","2")
+                  .set("show","given")
+                  .set("sort","new")
+                  .set("t","all")
+                  .set("type", "comments")
+                  .set("username", username)
+                  .set("after", after)
+    }).pipe(map(d =>{
+      var comments =d.data.children.map(l => {
+        return { id: l.data.name, text: l.data.body, time: new Date(l.data.created_utc) }
+      });
+      console.log(d);
+      console.log(comments);
+      return comments;
+    }));
   }
+
 }
+
 
 export interface Comment {
   id: string;
+  text: string;
+  time: Date;
 }
+
+
+
+

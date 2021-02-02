@@ -1,9 +1,10 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { isNull, ThrowStmt } from '@angular/compiler/src/output/output_ast';
 import { Router } from '@angular/router';
+import { ok } from 'assert';
 
 
 @Injectable({
@@ -35,9 +36,8 @@ export class AuthenticationService {
     return new Promise((resolve) =>{
       if(localStorage.token != null){
         this.accessToken = localStorage.token;
-        this.setUser(this.accessToken);
+        this.setUser(this.accessToken).subscribe(u => resolve(null));
       }
-      resolve(null);
     }).catch(error => console.log(error));
   }
 
@@ -62,15 +62,15 @@ export class AuthenticationService {
   }
 
 
-  setUser(accessToken: string) {
-    this.http.get<User>(this.meUrl)
-      .subscribe(u => {
-        console.log(u);
-        this.currentUser = u;
-      }, error => {
-        this.clearToken();
-        console.log(error);
-      });
+  setUser(accessToken: string): Observable<User> {
+    const ob =  this.http.get<User>(this.meUrl);
+    ob.subscribe(u => {
+      this.currentUser = u;
+    }, error => {
+      this.clearToken();
+      console.log(error);
+    });
+    return ob;
   }
 
 
