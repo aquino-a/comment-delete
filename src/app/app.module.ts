@@ -8,6 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { AuthenticationService } from './service/authentication.service';
 import { AuthenticationInterceptor } from './interceptor/authentication.interceptor';
+import { DeleteComponent } from './delete/delete.component';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
@@ -16,7 +17,8 @@ export const httpInterceptorProviders = [
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    DeleteComponent
   ],
   imports: [
     BrowserModule,
