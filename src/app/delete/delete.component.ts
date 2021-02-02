@@ -11,7 +11,7 @@ export class DeleteComponent implements OnInit {
   comments: Comment[];
   deletedComments: Comment[] = [ {id:"asdsd", isDeleted: true, time: new Date(), text: "HEYEYEYEY"} ];
 
-  constructor(private comment: CommentService) { 
+  constructor(private comment: CommentService) {
     this.getComments();
   }
 
@@ -20,28 +20,31 @@ export class DeleteComponent implements OnInit {
 
   delete(count: number): void{
     count = Number(count);
-    for (let i = 0; i < count; i++) {
-      var shifted = this.comments.shift();
-      this.comment.deleteComment(shifted)
-        .subscribe(c => {
-          c.isDeleted = true;
-          this.deletedComments.unshift(c);
-        }, error => {
-          this.comments.unshift(shifted);
-          console.log(error);
-        });
-    }
+    this.comment.delete(count);
+    // for (let i = 0; i < count; i++) {
+    //   var shifted = this.comments.shift();
+    //   this.comment.deleteComment(shifted)
+    //     .subscribe(c => {
+    //       c.isDeleted = true;
+    //       this.deletedComments.unshift(c);
+    //     }, error => {
+    //       this.comments.unshift(shifted);
+    //       console.log(error);
+    //     });
+    // }
   }
 
   getComments(){
-    this.comment.getComments().subscribe(cs => {
-      if(this.comments == null){
-        this.comments = cs;
-      }
-      else {
-        this.comments.concat(cs);
-      }
-    });
+    this.comments = this.comment.getComments();
+    this.deletedComments = this.comment.getDeletedComments();
+    // this.comment.getComments().subscribe(cs => {
+    //   if(this.comments == null){
+    //     this.comments = cs;
+    //   }
+    //   else {
+    //     this.comments.concat(cs);
+    //   }
+    // });
   }
 }
 
