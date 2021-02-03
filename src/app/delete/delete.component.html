@@ -3,6 +3,13 @@
         <input type="number" #count/>
         <button (click)="delete(count.value)">Delete</button>
     </div>
+    <div class="subreddit-container">
+       <div *ngFor='let subreddit of subreddits'>
+           <button class="subreddit" >
+               {{subreddit}}
+           </button>
+       </div>
+    </div>
     <div class="comment-container">
         <div class="comments-section">
             <div class="count">

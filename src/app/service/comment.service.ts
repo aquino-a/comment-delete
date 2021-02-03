@@ -14,6 +14,7 @@ export class CommentService {
   private deleteUrl = '/api/del';
   private comments: Comment[] = [];
   private deletedComments: Comment[] = [];
+  private subreddits: Set<string> = new Set<string>();
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
@@ -54,6 +55,7 @@ export class CommentService {
         });
       })).subscribe(cs => {
         this.comments.push(...cs);
+        this.updateSubreddits();
       });
     }
     return this.comments;
@@ -63,6 +65,15 @@ export class CommentService {
   getDeletedComments(): Comment[] {
     return this.deletedComments;
   }
+
+  getSubreddits(): Set<string> {
+    return this.subreddits;
+  }
+
+  updateSubreddits(){
+    this.comments.map(c => c.subreddit).forEach(sr => this.subreddits.add(sr));
+  }
+ 
 
 
 }

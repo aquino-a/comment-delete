@@ -9,7 +9,8 @@ import { CommentService, Comment } from '../service/comment.service';
 export class DeleteComponent implements OnInit {
 
   comments: Comment[];
-  deletedComments: Comment[] = [ {id:"asdsd", isDeleted: true, time: new Date(), text: "HEYEYEYEY"} ];
+  deletedComments: Comment[];
+  subreddits: Set<string>;
 
   constructor(private comment: CommentService) {
     this.getComments();
@@ -28,6 +29,7 @@ export class DeleteComponent implements OnInit {
   getComments(){
     this.comments = this.comment.getComments();
     this.deletedComments = this.comment.getDeletedComments();
+    this.subreddits = this.comment.getSubreddits();
   }
 }
 
