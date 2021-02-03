@@ -19,7 +19,7 @@ export class CommentService {
 
   private lastCount: number;
   public skippedCount: number = 0;
-  public scoreLimit: number = Number.MAX_VALUE;
+  public scoreLimit: number = 1;
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 

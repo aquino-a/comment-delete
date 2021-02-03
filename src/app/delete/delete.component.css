@@ -1,9 +1,13 @@
 .delete-container{
-    padding: 30px;
+    padding: 5px 30px;
 }
 
 .delete-options {
     text-align: center;
+}
+
+.delete-option {
+    margin: .25em;
 }
 
 .comment-container {
@@ -38,7 +42,7 @@
 .subreddit-container {
     display: flex;
     justify-content: center;
-    margin: 2em;
+    margin: .25em;
     flex-wrap: wrap;
 }
 
@@ -63,4 +67,10 @@
 
   .unselectedSubreddit {
       background-color: lightgray;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .delete-container {
+      padding: 0;
+    }
   }
