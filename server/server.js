@@ -13,11 +13,7 @@ app.listen(port, () => {
 
 
 async function getToken(code){
-    const data = JSON.stringify({
-        grant_type: 'code',
-        code: code,
-        redirect_uri: 'http://localhost:4200/login'
-      });
+    const data = `grant_type=authorization_code&code=${code}&redirect_uri=http://localhost:4200/login`
 
     const options = {
         hostname: 'www.reddit.com',
@@ -27,7 +23,7 @@ async function getToken(code){
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': data.length,
-            'Authorization': "Basic " + Buffer.from('').toString('base64')
+            'Authorization': "Basic " + Buffer.from(process.env.clientId + ':' + process.env.clientSecret).toString('base64')
         }
     };
 
