@@ -9,12 +9,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CommentService {
- 
+  
   private redditUrl = 'https://oauth.reddit.com'
   private deleteUrl = '/api/del';
   private comments: Comment[] = [];
   private deletedComments: Comment[] = [];
   private subreddits: Set<string> = new Set<string>();
+  private unselectedSubreddits: Set<string> = new Set<string>();
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
@@ -73,6 +74,20 @@ export class CommentService {
   updateSubreddits(){
     this.comments.map(c => c.subreddit).forEach(sr => this.subreddits.add(sr));
   }
+
+  getunselectedSubreddits(): Set<string> {
+    return this.unselectedSubreddits;
+  }
+
+  toggleSelection(subreddit: string){
+    if(this.unselectedSubreddits.has(subreddit)){
+      this.unselectedSubreddits.delete(subreddit);
+    }
+    else {
+      this.unselectedSubreddits.add(subreddit);
+    }
+  }
+ 
  
 
 
@@ -86,6 +101,11 @@ export interface Comment {
   score: Number;
   subreddit: string;
   isDeleted: boolean;
+}
+
+export interface Subreddit {
+  name: string;
+  isSelected: boolean;
 }
 
 

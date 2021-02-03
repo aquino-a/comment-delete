@@ -11,8 +11,9 @@ export class DeleteComponent implements OnInit {
   comments: Comment[];
   deletedComments: Comment[];
   subreddits: Set<string>;
+  unselectedSubreddits: Set<string>;
 
-  constructor(private comment: CommentService) {
+  constructor(public comment: CommentService) {
     this.getComments();
   }
 
@@ -30,6 +31,7 @@ export class DeleteComponent implements OnInit {
     this.comments = this.comment.getComments();
     this.deletedComments = this.comment.getDeletedComments();
     this.subreddits = this.comment.getSubreddits();
+    this.unselectedSubreddits = this.comment.getunselectedSubreddits();
   }
 }
 

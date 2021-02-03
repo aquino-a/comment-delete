@@ -5,7 +5,7 @@
     </div>
     <div class="subreddit-container">
        <div *ngFor='let subreddit of subreddits'>
-           <button class="subreddit" >
+           <button class="subreddit" (click)='comment.toggleSelection(subreddit)' [ngStyle]="{'background-color': unselectedSubreddits.has(subreddit) ? 'lightgray' : 'mistyrose'}">
                {{subreddit}}
            </button>
        </div>
