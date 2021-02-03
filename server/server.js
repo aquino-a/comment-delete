@@ -33,7 +33,7 @@ async function getToken(code){
                 console.log(`statusCode: ${res.statusCode}`)
                 await res.on('data', d => {
                   process.stdout.write(d)
-                  resolve(data);
+                  resolve(d);
                 })
               });
             req.on('error', error => {
