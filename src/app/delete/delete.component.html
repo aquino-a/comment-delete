@@ -2,10 +2,14 @@
     <div class="delete-options">
         <input type="number" #count/>
         <button (click)="delete(count.value)">Delete</button>
+        <br />
+        <label for="lessThan">Less than: </label>
+        <input name="lessThan" type="number" #count/>
+        <br />
     </div>
     <div class="subreddit-container">
        <div *ngFor='let subreddit of subreddits'>
-           <button class="subreddit" (click)='comment.toggleSelection(subreddit)' [ngStyle]="{'background-color': unselectedSubreddits.has(subreddit) ? 'lightgray' : 'mistyrose'}">
+           <button class="subreddit" (click)='comment.toggleSelection(subreddit)' [class.unselectedSubreddit]='unselectedSubreddits.has(subreddit)' >
                {{subreddit}}
            </button>
        </div>
@@ -13,7 +17,8 @@
     <div class="comment-container">
         <div class="comments-section">
             <div class="count">
-                Queued: {{comments.length}}
+                Queued: {{comments.length}} <br />
+                Skipped: {{comment.skippedCount}}
             </div>
             <div class="comments">
                 <div *ngFor='let comment of comments' >

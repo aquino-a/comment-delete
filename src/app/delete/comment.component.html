@@ -1,4 +1,8 @@
-<div class="comment" [ngStyle]="{'background-color': comment.isDeleted ? 'coral' : 'azure'}">
+<div class="comment" [class.deletedComment]='comment.isDeleted'>
+    <br/>
+    <label>{{comment.subreddit}}</label>
+    <br/>
+    <label>Score: {{comment.score}}</label>
     <br/>
     <label>{{comment.time.toUTCString()}}</label>
     <p>{{comment.text}}</p>

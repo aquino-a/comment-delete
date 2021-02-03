@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './authentication.service';
-import { map } from 'rxjs/operators';
+import { last, map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -17,10 +17,22 @@ export class CommentService {
   private subreddits: Set<string> = new Set<string>();
   private unselectedSubreddits: Set<string> = new Set<string>();
 
+  private lastCount: number;
+  public skippedCount: number = 0;
+  public scoreLimit: number = Number.MAX_VALUE;
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
-  deleteComment(c: Comment = this.comments.shift()): Observable<Comment> {
+  deleteComment(): Observable<Comment> {
+    for(var c = this.comments.shift();
+     this.unselectedSubreddits.has(c.subreddit)  || c.score >= this.scoreLimit; 
+     this.skippedCount++, c = this.comments.shift()) {
+        if(c == null || c == undefined){
+          this.getComments();
+          return;
+        }
+    }
+
     var ob = this.http.post(this.redditUrl + this.deleteUrl, null, {
       params: new HttpParams()
                 .set('id', c.id)
@@ -28,7 +40,15 @@ export class CommentService {
     ob.subscribe(c => {
       c.isDeleted = true;
       this.deletedComments.unshift(c);
-    }, error => console.log(error));
+    }, error => {
+      console.log(error);
+      this.comments.unshift(c);
+    });
+
+    if(this.comments.length < this.lastCount / 2){
+      this.getComments();
+    }
+
     return ob;
   }
 
@@ -57,6 +77,7 @@ export class CommentService {
       })).subscribe(cs => {
         this.comments.push(...cs);
         this.updateSubreddits();
+        this.lastCount = this.comments.length;
       });
     }
     return this.comments;
@@ -83,7 +104,7 @@ export class CommentService {
     if(this.unselectedSubreddits.has(subreddit)){
       this.unselectedSubreddits.delete(subreddit);
     }
-    else {
+    else if(this.unselectedSubreddits.size + 1 < this.subreddits.size) {
       this.unselectedSubreddits.add(subreddit);
     }
   }

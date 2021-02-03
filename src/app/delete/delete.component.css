@@ -2,6 +2,10 @@
     padding: 30px;
 }
 
+.delete-options {
+    text-align: center;
+}
+
 .comment-container {
     display: flex;
 }
@@ -15,6 +19,10 @@
     background-color: azure;
     padding: .5em;
     margin: .5em;
+}
+
+.deletedComment {
+    background-color: coral;
 }
 
 .count {
@@ -39,7 +47,7 @@
     padding: 1em;
     border-radius: .5em;
     margin: .25em;
-    background-color: greenyellow;
+    background-color: mistyrose;
     box-shadow: 0 .25em #999;
 }
 
@@ -51,4 +59,8 @@
     background-color: #e0ece0;
     box-shadow: 0 .1em #666;
     transform: translateY(.1em); 
+  }
+
+  .unselectedSubreddit {
+      background-color: lightgray;
   }
