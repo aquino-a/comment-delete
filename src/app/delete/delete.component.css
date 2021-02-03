@@ -54,6 +54,7 @@
     margin: .25em;
     background-color: mistyrose;
     box-shadow: 0 .25em #999;
+    font-family: Helvetica, sans-serif;
 }
 
 .subreddit:hover {
@@ -72,7 +73,9 @@
 
 .control-button {
     background-color: gainsboro;
+    font-size: xx-large;
     max-width: 25em;
+    padding: .2em;
 }
 
 .start-delete {

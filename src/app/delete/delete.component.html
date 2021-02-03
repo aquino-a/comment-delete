@@ -1,13 +1,9 @@
 <div class="delete-container">
     <div class="delete-options">
-        <input type="number" #count/>
-        <button (click)="delete(count.value)">Delete</button>
-        <br />
         <div class="delete-option">
             <label for="lessThan">Less than: </label>
             <input name="lessThan" type="number" [(value)]='comment.scoreLimit'/>
         </div>
-        <br />
     </div>
     <div class="subreddit-container">
        <div *ngFor='let subreddit of subreddits'>
