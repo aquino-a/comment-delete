@@ -18,19 +18,24 @@ export class CommentService {
   private unselectedSubreddits: Set<string> = new Set<string>();
 
   private lastCount: number;
+  private deleteTimer: any;
+
   public skippedCount: number = 0;
   public scoreLimit: number = 1;
+  public isDeleting: boolean;
+
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
-  deleteComment(): Observable<Comment> {
-    for(var c = this.comments.shift();
-     this.unselectedSubreddits.has(c.subreddit)  || c.score >= this.scoreLimit; 
+  deleteComment = () : Observable<Comment> => {
+    var c = this.comments.shift();
+    for(;this.unselectedSubreddits.has(c.subreddit)  || c.score >= this.scoreLimit; 
      this.skippedCount++, c = this.comments.shift()) {
         if(c == null || c == undefined){
           this.getComments();
           return;
         }
+        else break;
     }
 
     var ob = this.http.post(this.redditUrl + this.deleteUrl, null, {
@@ -106,6 +111,17 @@ export class CommentService {
     }
     else if(this.unselectedSubreddits.size + 1 < this.subreddits.size) {
       this.unselectedSubreddits.add(subreddit);
+    }
+  }
+
+  toggleDeletion(isEnabled: boolean = false){
+    if(isEnabled){
+      this.isDeleting = true;
+      this.deleteTimer = setInterval(this.deleteComment, 2000);
+    }
+    else {
+      this.isDeleting = false;
+      clearInterval(this.deleteTimer);
     }
   }
  

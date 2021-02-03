@@ -10,6 +10,7 @@
     margin: .25em;
 }
 
+
 .comment-container {
     display: flex;
 }
@@ -63,11 +64,26 @@
     background-color: #e0ece0;
     box-shadow: 0 .1em #666;
     transform: translateY(.1em); 
-  }
+}
 
-  .unselectedSubreddit {
-      background-color: lightgray;
-  }
+.unselectedSubreddit {
+    background-color: lightgray;
+}
+
+.control-button {
+    background-color: gainsboro;
+    max-width: 25em;
+}
+
+.start-delete {
+    background-color: chartreuse;
+}
+
+.stop-delete {
+    background-color: deeppink;
+}
+
+
 
   @media only screen and (max-width: 600px) {
     .delete-container {

@@ -16,6 +16,14 @@
            </button>
        </div>
     </div>
+    <div class="subreddit-container">
+           <button class="subreddit control-button" (click)='comment.toggleDeletion(true)' [class.start-delete]='comment.isDeleting'>
+               Delete
+           </button>
+           <button class="subreddit control-button" (click)='comment.toggleDeletion(false)' [class.stop-delete]='!comment.isDeleting'>
+               Stop
+           </button>
+    </div>
     <div class="comment-container">
         <div class="comments-section">
             <div class="count">
