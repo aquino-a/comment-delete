@@ -23,7 +23,8 @@ export class CommentService {
 
   public skippedCount: number = 0;
   public scoreLimit: number = 1;
-  public isDeleting: boolean;
+  public useLimit: boolean = false;
+  public isDeleting: boolean = false;
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
@@ -37,7 +38,7 @@ export class CommentService {
         this.getComments();
         return;
       }
-      if(!this.unselectedSubreddits.has(c.subreddit)  && c.score < this.scoreLimit){
+      if(!this.unselectedSubreddits.has(c.subreddit)  && (!this.useLimit || c.score < this.scoreLimit)){
         break;
       }
       else {

@@ -1,6 +1,7 @@
 <div class="delete-container">
     <div class="delete-options">
         <div class="delete-option">
+            <input type="checkbox" [(ngModel)]='comment.useLimit' />
             <label for="lessThan">Less than: </label>
             <input #lessThan name="lessThan"  type="number" [(ngModel)]='comment.scoreLimit' />
         </div>
