@@ -37,9 +37,15 @@ export class AuthenticationService {
       if(localStorage.token == null || localStorage.token == undefined){
         resolve(null);
       }
-      
+
+      if(localStorage.user == null || localStorage.user == undefined){
+        resolve(null);
+      }
+
       this.accessToken = localStorage.token;
-      this.setUser(this.accessToken).subscribe(u => resolve(null), error => { this.clearToken(); resolve(null); });
+      this.currentUser = JSON.parse(localStorage.user) as User;
+      resolve(null);
+      // this.setUser(this.accessToken).subscribe(u => resolve(null), error => { this.clearToken(); resolve(null); });
     }).catch(error => console.log(error));
   }
 
@@ -68,6 +74,7 @@ export class AuthenticationService {
     const ob =  this.http.get<User>(this.meUrl);
     ob.subscribe(u => {
       this.currentUser = u;
+      localStorage.user = JSON.stringify(u);
     }, error => {
       this.clearToken();
       console.log(error);
@@ -83,7 +90,7 @@ export class AuthenticationService {
   }
 
   isAuthenticated() {
-    return this.accessToken != null;
+    return this.accessToken != null && this.currentUser != null && this.currentUser != undefined;
   }
 
 }

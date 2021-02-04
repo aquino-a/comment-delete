@@ -1,5 +1,5 @@
 <p>login works!</p>
-<div *ngIf="auth.accessToken; else loggedInBlock">
+<div *ngIf="auth.isAuthenticated(); else loggedInBlock">
     <p>Logged in!</p>
     <p (click)="auth.clearToken()">Log out</p>
     <p>Token: {{auth.accessToken}}</p>

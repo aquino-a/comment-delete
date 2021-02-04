@@ -8,8 +8,8 @@ import { CommentService, Comment } from '../service/comment.service';
 })
 export class DeleteComponent implements OnInit {
 
-  comments: Comment[];
-  deletedComments: Comment[];
+  comments: Comment[] = [];
+  deletedComments: Comment[] = [];
   subreddits: Set<string>;
   unselectedSubreddits: Set<string>;
 
