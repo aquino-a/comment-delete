@@ -20,11 +20,12 @@ export class CommentService {
   private lastCount: number;
   private deleteTimer: any;
   private lastLast: string;
+  private isFinished = false;
 
-  public skippedCount: number = 0;
-  public scoreLimit: number = 1;
-  public useLimit: boolean = false;
-  public isDeleting: boolean = false;
+  public skippedCount = 0;
+  public scoreLimit = 1;
+  public useLimit = false;
+  public isDeleting = false;
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
@@ -110,6 +111,7 @@ export class CommentService {
         this.lastCount = this.comments.length;
       } 
       else {
+        this.isFinished = true;
         this.toggleDeletion(false);
         this.lastLast = '';
       }
@@ -148,7 +150,10 @@ export class CommentService {
     if(isEnabled){
       this.isDeleting = true;
       this.deleteTimer = setInterval(this.deleteComment, 2000);
-      this.skippedCount = 0;
+      if(this.isFinished){
+        this.skippedCount = 0;
+        this.isFinished = false;
+      }
     }
     else {
       this.isDeleting = false;
