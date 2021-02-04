@@ -19,23 +19,31 @@ export class CommentService {
 
   private lastCount: number;
   private deleteTimer: any;
+  private lastLast: string;
 
   public skippedCount: number = 0;
   public scoreLimit: number = 1;
   public isDeleting: boolean;
+  public isFinished: boolean;
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
   deleteComment = () : Observable<Comment> => {
-    var c = this.comments.shift();
-    for(;this.unselectedSubreddits.has(c.subreddit)  || c.score >= this.scoreLimit; 
-     this.skippedCount++, c = this.comments.shift()) {
-        if(c == null || c == undefined){
-          this.getComments();
-          return;
-        }
-        else break;
+    
+    var c;
+    while(true){
+      c = this.comments.shift();
+      if(c == null || c == undefined){
+        this.getComments();
+        return;
+      }
+      if(!this.unselectedSubreddits.has(c.subreddit)  && c.score < this.scoreLimit){
+        break;
+      }
+      else {
+        this.skippedCount++;
+      }
     }
 
     var ob = this.http.post(this.redditUrl + this.deleteUrl, null, {
@@ -58,34 +66,58 @@ export class CommentService {
   }
 
 
-  getComments(username = this.auth.currentUser.name): Comment[] {
-    if(this.comments.length == 0){
-      this.http.get<any>(this.redditUrl + '/user/${username}/comments', {
-        params: new HttpParams()
-                    .set("context","2")
-                    .set("show","given")
-                    .set("sort","new")
-                    .set("t","all")
-                    .set("type", "comments")
-                    .set("username", username)
-                    .set("after", this.comments.length > 0 ? this.comments[this.comments.length - 1].id : "")
-      }).pipe(map(d =>{
-        return d.data.children.map(l => {
-          return { 
-            id: l.data.name, 
-            text: l.data.body, 
-            score: Number(l.data.score),
-            subreddit: l.data.subreddit,
-            time: new Date(l.data.created_utc) 
-          }
-        });
-      })).subscribe(cs => {
-        this.comments.push(...cs);
-        this.updateSubreddits();
-        this.lastCount = this.comments.length;
-      });
+  getComments(refresh = false): Comment[] {
+
+    if(this.auth.currentUser == null){
+      return this.comments;
     }
+    else if(refresh) {
+      this.refreshComments();
+    }
+    else if(this.comments.length == 0 && !this.isFinished){
+      this.refreshComments();
+    }
+   
     return this.comments;
+  }
+
+
+  refreshComments() {
+
+    const username = this.auth.currentUser.name;
+    const after = this.lastLast;
+
+    this.http.get<any>(this.redditUrl + '/user/${username}/comments', {
+      params: new HttpParams()
+                  .set("context","2")
+                  .set("show","given")
+                  .set("sort","new")
+                  .set("t","all")
+                  .set("type", "comments")
+                  .set("username", username)
+                  .set("after", after)
+    }).pipe(map(d =>{
+      return d.data.children.map(l => {
+        return { 
+          id: l.data.name, 
+          text: l.data.body, 
+          score: Number(l.data.score),
+          subreddit: l.data.subreddit,
+          time: new Date(l.data.created_utc) 
+        }
+      });
+    })).subscribe(cs => {
+      if(cs.length > 0){
+        if(this.lastLast == cs[cs.length - 1].id){
+          this.isFinished = true;
+          this.toggleDeletion(false);
+        }
+        else this.lastLast = cs[cs.length - 1].id;
+      }
+      this.comments.push(...cs);
+      this.updateSubreddits();
+      this.lastCount = this.comments.length;
+    });
   }
 
 
