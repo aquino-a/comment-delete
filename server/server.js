@@ -2,10 +2,13 @@ const https = require('https')
 const express = require('express')
 const minimist = require('minimist')
 const app = express()
+
 const args = minimist(process.argv.slice(2))
 const port = args['port'];
+const _app_folder = '../dist/comment-delete'
 
-app.get('/', (req, res) => {
+
+app.get('/api/token', (req, res) => {
     const t = getToken(req.query.code);
     t.then(t =>{
         res.header('Access-Control-Allow-Origin', args['origin'])
@@ -14,6 +17,13 @@ app.get('/', (req, res) => {
         res.status(500).send(null);
     });
 })
+
+app.get('*.*', express.static(_app_folder, {maxAge: '1y'}));
+
+// ---- SERVE APLICATION PATHS ---- //
+app.all('*', function (req, res) {
+    res.status(200).sendFile(`/`, {root: _app_folder});
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
