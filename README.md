@@ -4,10 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Build
 
-First create `run.bat` / `run.sh` following `run.bat.sample` 
+First, create `run.bat` / `run.sh` following `run.bat.sample` 
 Fill in the correct data for the node server
 
-Second create `environment.ts` following `environment.ts.sample`
+Second, create `environment.ts` following `environment.ts.sample`
 Fill in the correct data for the angular app.
 
 Run `npm build` or `ng build` to build the project.
