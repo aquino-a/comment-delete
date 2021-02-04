@@ -24,7 +24,6 @@ export class CommentService {
   public skippedCount: number = 0;
   public scoreLimit: number = 1;
   public isDeleting: boolean;
-  public isFinished: boolean;
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
@@ -66,18 +65,13 @@ export class CommentService {
   }
 
 
-  getComments(refresh = false): Comment[] {
+  getComments(): Comment[] {
 
     if(this.auth.currentUser == null){
       return this.comments;
     }
-    else if(refresh) {
-      this.refreshComments();
-    }
-    else if(this.comments.length == 0 && !this.isFinished){
-      this.refreshComments();
-    }
-   
+
+    this.refreshComments();
     return this.comments;
   }
 
@@ -108,15 +102,18 @@ export class CommentService {
       });
     })).subscribe(cs => {
       if(cs.length > 0){
-        if(this.lastLast == cs[cs.length - 1].id){
-          this.isFinished = true;
-          this.toggleDeletion(false);
-        }
-        else this.lastLast = cs[cs.length - 1].id;
+        this.lastLast = cs[cs.length - 1].id;
+
+        this.comments.push(...cs);
+        this.updateSubreddits();
+        this.lastCount = this.comments.length;
+      } 
+      else {
+        this.toggleDeletion(false);
+        this.lastLast = '';
       }
-      this.comments.push(...cs);
-      this.updateSubreddits();
-      this.lastCount = this.comments.length;
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -150,16 +147,13 @@ export class CommentService {
     if(isEnabled){
       this.isDeleting = true;
       this.deleteTimer = setInterval(this.deleteComment, 2000);
+      this.skippedCount = 0;
     }
     else {
       this.isDeleting = false;
       clearInterval(this.deleteTimer);
     }
   }
- 
- 
-
-
 }
 
 

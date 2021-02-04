@@ -2,7 +2,7 @@
     <div class="delete-options">
         <div class="delete-option">
             <label for="lessThan">Less than: </label>
-            <input name="lessThan" type="number" [(value)]='comment.scoreLimit'/>
+            <input #lessThan name="lessThan"  type="number" [(ngModel)]='comment.scoreLimit' />
         </div>
     </div>
     <div class="subreddit-container">
