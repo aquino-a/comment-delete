@@ -46,3 +46,5 @@ testem.log
 Thumbs.db
 
 environment.ts
+run.bat
+run.sh

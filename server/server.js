@@ -1,10 +1,18 @@
 const https = require('https')
 const express = require('express')
+const minimist = require('minimist')
 const app = express()
-const port = 8080
+const args = minimist(process.argv.slice(2))
+const port = args['port'];
 
 app.get('/', (req, res) => {
-    res.send(JSON.stringify({token: getToken(req.query.code)})); 
+    const t = getToken(req.query.code);
+    t.then(t =>{
+        res.header('Access-Control-Allow-Origin', args['origin'])
+        res.status(200).send(t); 
+    }).catch(error => {
+        res.status(500).send(null);
+    });
 })
 
 app.listen(port, () => {
@@ -13,7 +21,7 @@ app.listen(port, () => {
 
 
 async function getToken(code){
-    const data = `grant_type=authorization_code&code=${code}&redirect_uri=http://localhost:4200/login`
+    const data = `grant_type=authorization_code&code=${code}&redirect_uri=${args['redirect']}`
 
     const options = {
         hostname: 'www.reddit.com',
@@ -23,28 +31,27 @@ async function getToken(code){
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': data.length,
-            'Authorization': "Basic " + Buffer.from(process.env.clientId + ':' + process.env.clientSecret).toString('base64')
+            'Authorization': "Basic " + Buffer.from(args['clientId'] + ':' + args['clientSecret']).toString('base64')
         }
     };
 
-    const tokenPromise = async () =>{
+    const tokenPromise = () =>{
         return new Promise((resolve) =>{
-            const req = https.request(options, async res => {
+            const req = https.request(options, res => {
                 console.log(`statusCode: ${res.statusCode}`)
-                await res.on('data', d => {
-                  process.stdout.write(d)
+                res.on('data', d => {
                   resolve(d);
                 })
               });
             req.on('error', error => {
-            console.error(error)
+                console.error(error)
             })
             
             req.write(data)
             req.end()
         })
     }
-    return await tokenPromise();
+    return tokenPromise();
 }
 
 

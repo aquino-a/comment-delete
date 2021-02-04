@@ -1,0 +1,1 @@
+node server.js --clientId=asdasd --clientSecret=asdasdasd --port=443 --origin=http://localhost:8080 --redirect=http://localhost:8080/redirect
