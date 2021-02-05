@@ -99,7 +99,7 @@ export class CommentService {
           text: l.data.body, 
           score: Number(l.data.score),
           subreddit: l.data.subreddit,
-          time: new Date(l.data.created_utc) 
+          time: new Date(l.data.created_utc * 1000) 
         }
       });
     })).subscribe(cs => {
