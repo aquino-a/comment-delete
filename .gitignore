@@ -46,5 +46,7 @@ testem.log
 Thumbs.db
 
 environment.ts
+environment.prod.ts
+index.prod.html
 run.bat
 run.sh
