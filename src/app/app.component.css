@@ -7,7 +7,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #2b2b2b;
   }
   
 .nav li {
@@ -35,7 +35,7 @@
   
   /* Change the link color to #111 (black) on hover */
 .nav li a:hover {
-    background-color: #111;
+    background-color: #2b2b2b;
   }
 
 #container {

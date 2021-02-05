@@ -21,13 +21,13 @@
 }
 
 .comment {
-    background-color: azure;
+    background-color: #8D99AE;
     padding: .5em;
     margin: .5em;
 }
 
 .deletedComment {
-    background-color: coral;
+    background-color: #D90429;
 }
 
 .count {
@@ -68,22 +68,23 @@
 }
 
 .unselectedSubreddit {
-    background-color: lightgray;
+    background-color: #fbfbfd;
 }
 
 .control-button {
-    background-color: gainsboro;
+    background-color: #fbfbfd;
     font-size: xx-large;
     max-width: 25em;
     padding: .2em;
 }
 
 .start-delete {
-    background-color: chartreuse;
+    background-color: #0071E3;
+    color: #ffffff;
 }
 
 .stop-delete {
-    background-color: deeppink;
+    background-color: #EF233C;
 }
 
 
