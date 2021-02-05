@@ -1,12 +1,15 @@
 const https = require('https')
 const express = require('express')
 const minimist = require('minimist')
+const compression = require('compression')
 const app = express()
 
 const args = minimist(process.argv.slice(2))
 const port = args['port'];
 const _app_folder = '../dist/comment-delete'
 
+
+app.use(compression());
 
 app.get('/api/token', (req, res) => {
     const t = getToken(req.query.code);
