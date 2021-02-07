@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   private clientId = environment.clientId;
   private redirect = environment.redirect;
   private loginUrl = new URL("https://www.reddit.com/api/v1/authorize");
+  private loginUrlMobile = new URL("https://www.reddit.com/api/v1/authorize.compact");
 
   private state;
 
@@ -43,16 +44,21 @@ export class LoginComponent implements OnInit {
     if(this.auth.isAuthenticated()){
       return;
     }
+    var url = this.loginUrl;
+    const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+    if (isMobile) {
+      url = this.loginUrlMobile;
+    }
 
-    this.loginUrl.searchParams.set("client_id", this.clientId);
-    this.loginUrl.searchParams.set("response_type", 'code');
+    url.searchParams.set("client_id", this.clientId);
+    url.searchParams.set("response_type", 'code');
     this.state = Math.floor(Math.random() * 9999);
-    this.loginUrl.searchParams.set("state", this.state);
-    this.loginUrl.searchParams.set("redirect_uri", this.redirect);
-    this.loginUrl.searchParams.set("duration", "temporary");
-    this.loginUrl.searchParams.set("scope", "read,edit,identity,history");
+    url.searchParams.set("state", this.state);
+    url.searchParams.set("redirect_uri", this.redirect);
+    url.searchParams.set("duration", "temporary");
+    url.searchParams.set("scope", "read,edit,identity,history");
 
-    window.open(this.loginUrl.href, "_self");
+    window.open(url.href, "_self");
   }
 
 }
