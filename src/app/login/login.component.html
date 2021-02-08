@@ -1,8 +1,6 @@
-<p>login works!</p>
 <div *ngIf="auth.isAuthenticated(); else loggedInBlock">
     <p>Logged in!</p>
     <p (click)="auth.clearToken()">Log out</p>
-    <p>Token: {{auth.accessToken}}</p>
     <br />
     <div *ngIf="auth.currentUser" >
         User: 
@@ -11,15 +9,12 @@
                 name: {{auth.currentUser.name}}
             </li>
             <li>
-                id: {{auth.currentUser.id}}
-            </li>
-            <li>
                 icon: <img src="{{auth.currentUser.icon_img}}" />
             </li>
         </ul>
     </div>
 </div>
 <ng-template #loggedInBlock>
-    <a (click)="login()">Login</a>
+    <p><a (click)="login()">Login</a></p>
 </ng-template>
 
