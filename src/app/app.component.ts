@@ -8,3 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'comment-delete';
 }
+
+
+@Component({
+  templateUrl: './about.component.html',
+})
+export class AboutComponent {
+}
+
+

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AboutComponent, AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
@@ -20,7 +20,8 @@ export const httpInterceptorProviders = [
     AppComponent,
     LoginComponent,
     DeleteComponent,
-    CommentComponent
+    CommentComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
