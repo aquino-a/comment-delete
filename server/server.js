@@ -6,7 +6,7 @@ const app = express()
 
 const args = minimist(process.argv.slice(2))
 const port = args['port'];
-const _app_folder = '../dist/comment-delete'
+const _app_folder = args['app-folder'];
 
 
 app.use(compression());
@@ -28,9 +28,27 @@ app.all('*', function (req, res) {
     res.status(200).sendFile(`/`, {root: _app_folder});
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+startServer();
+
+
+function startServer(){
+    if(port == 443){
+        const https = require('https')
+        const fs = require('fs')
+        const options = {
+            key: fs.readFileSync(args['keyPath']),
+            cert: fs.readFileSync(args['certPath'])
+        };
+        https.createServer(options, app).listen(443, () => {
+            console.log(`Example app listening at http://localhost:${port}`)
+        })
+    }
+    else {
+        app.listen(port, () => {
+          console.log(`Example app listening at http://localhost:${port}`)
+        })
+    }
+}
 
 
 async function getToken(code){

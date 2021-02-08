@@ -1,1 +1,1 @@
-node server.js --clientId=asdasd --clientSecret=asdasdasd --port=443 --origin=http://localhost:8080 --redirect=http://localhost:8080/redirect
+node server.js --clientId=asdasd --clientSecret=asdasdasd --port=443 --origin=http://localhost:8080 --redirect=http://localhost:8080/redirect --app-folder=../dist/comment-delete --keyPath=.ssh/key --certPath=.ssh/cert
