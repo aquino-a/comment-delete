@@ -48,3 +48,8 @@
     padding: 40px .5vw;
   }
 }
+@media only screen and (max-width: 394px) {
+  #container {
+    padding: 80px .5vw;
+  }
+}
