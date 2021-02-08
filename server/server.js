@@ -39,6 +39,9 @@ function startServer(){
             key: fs.readFileSync(args['keyPath']),
             cert: fs.readFileSync(args['certPath'])
         };
+
+        startRedirectServer();
+
         https.createServer(options, app).listen(443, () => {
             console.log(`Example app listening at http://localhost:${port}`)
         })
@@ -48,6 +51,18 @@ function startServer(){
           console.log(`Example app listening at http://localhost:${port}`)
         })
     }
+}
+
+function startRedirectServer(){
+    const http = require('http');
+    const httpApp = express();
+    const letsEncryptPath = args['letsEncryptPath']
+
+    httpApp.use("/.well-known/acme-challenge", express.static(letsEncryptPath +  "/.well-known/acme-challenge"));
+    httpApp.get('*', function(req, res) {  
+        res.redirect('https://' + req.headers.host + req.url);
+    })
+    const httpServer = http.createServer(httpApp).listen(80);
 }
 
 
