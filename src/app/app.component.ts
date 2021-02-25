@@ -16,4 +16,12 @@ export class AppComponent {
 export class AboutComponent {
 }
 
+@Component({
+  templateUrl: './privacy.component.html',
+})
+export class PrivacyComponent {
+}
+
+
+
 

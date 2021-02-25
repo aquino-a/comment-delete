@@ -15,6 +15,15 @@
     </div>
 </div>
 <ng-template #loggedInBlock>
-    <p><a (click)="login()">Login</a></p>
+    <p>
+        Comment Delete is a web tool where you can quickly and easily delete your reddit comments.  
+        You can delete your reddit comments by subreddit or by karma score.
+    </p>
+    <p>
+        Login to reddit to get started.
+        The tool will appear automatically after logging in and will download get your comments.
+        Please refer to the <a routerLink='/privacy'>Privacy Policy</a> for any questions about how your reddit data is used.
+    </p>
+    <p><button (click)="login()">Login</button></p>
 </ng-template>
 
