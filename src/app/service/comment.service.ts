@@ -9,7 +9,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CommentService {
-  
   private redditUrl = 'https://oauth.reddit.com'
   private deleteUrl = '/api/del';
   private comments: Comment[] = [];
@@ -27,22 +26,32 @@ export class CommentService {
   public skippedCount = 0;
   public scoreLimit = 1;
   public useLimit = false;
+  public earlierThan = new Date();
+  public useEarlierThan = false;
+  public laterThan = new Date();
+  public useLaterThan = false;
+
+
   public isDeleting = false;
 
 
   constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
   deleteComment = () : Observable<Comment> => {
+    if(!this.auth.isAuthenticated()){
+      this.toggleDeletion(false);
+      return;
+    }
     
     var c;
     while(true){
-      c = this.comments.shift();
-      this.commentIds.delete(c.id);
-      if(c == null || c == undefined){
+      if(this.comments.length == 0){
         this.getComments();
         return;
       }
-      if(!this.unselectedSubreddits.has(c.subreddit)  && (!this.useLimit || c.score < this.scoreLimit)){
+      c = this.comments.shift();
+      this.commentIds.delete(c.id);
+      if(this.IsOkToDelete(c)) {
         break;
       }
       else {
@@ -69,6 +78,26 @@ export class CommentService {
     }
 
     return ob;
+  }
+
+  IsOkToDelete(c: Comment): boolean {
+    if(this.unselectedSubreddits.has(c.subreddit)){
+      return false;
+    }
+
+    if(this.useLimit && c.score >= this.scoreLimit){
+      return false;
+    }
+    
+    if(this.useEarlierThan &&  c.time >= this.earlierThan){
+      return false;
+    }
+
+    if(this.useLaterThan &&  c.time <= this.laterThan){
+      return false;
+    }
+    
+    return true;
   }
 
 

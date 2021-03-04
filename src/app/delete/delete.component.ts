@@ -33,6 +33,10 @@ export class DeleteComponent implements OnInit {
     this.subreddits = this.comment.getSubreddits();
     this.unselectedSubreddits = this.comment.getunselectedSubreddits();
   }
+
+  toDate(text: string): Date {
+    return new Date(text);
+  }
 }
 
 
