@@ -14,6 +14,8 @@ export class CommentService {
   private deleteUrl = '/api/del';
   private comments: Comment[] = [];
   private deletedComments: Comment[] = [];
+  private commentIds: Set<string> = new Set<string>();
+  private deletedCommentIds: Set<string> = new Set<string>();
   private subreddits: Set<string> = new Set<string>();
   private unselectedSubreddits: Set<string> = new Set<string>();
 
@@ -35,6 +37,7 @@ export class CommentService {
     var c;
     while(true){
       c = this.comments.shift();
+      this.commentIds.delete(c.id);
       if(c == null || c == undefined){
         this.getComments();
         return;
@@ -54,9 +57,11 @@ export class CommentService {
     ob.subscribe(c => {
       c.isDeleted = true;
       this.deletedComments.unshift(c);
+      this.deletedCommentIds.add(c.id);
     }, error => {
       console.log(error);
       this.comments.unshift(c);
+      this.commentIds.add(c.id);
     });
 
     if(this.comments.length < this.lastCount / 2){
@@ -106,9 +111,11 @@ export class CommentService {
       if(cs.length > 0){
         this.lastLast = cs[cs.length - 1].id;
 
-        this.comments.push(...cs);
+        const filteredComments = cs.filter(c => !this.commentIds.has(c.id) && !this.deletedCommentIds.has(c.id));
+        this.comments.push(...filteredComments);
         this.updateSubreddits();
         this.lastCount = this.comments.length;
+        filteredComments.forEach(c => this.commentIds.add(c.id));
       } 
       else {
         this.isFinished = true;
