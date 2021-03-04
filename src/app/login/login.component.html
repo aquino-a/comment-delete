@@ -21,9 +21,17 @@
     </p>
     <p>
         Login to reddit to get started.
-        The tool will appear automatically after logging in and will download get your comments.
-        Please refer to the <a routerLink='/privacy'>Privacy Policy</a> for any questions about how your reddit data is used.
+        Your comments and subreddits will appear automatically after logging in.
+    </p>
+    <p>
+        When you login it is done directly on reddit.com.
+        After that, you approve this site for temporary (1 hour) permission to read and delete your comments.
+        Reddit will forward you back to this site with a token that the site can use to delete your comments.
+        You can also revoke the token through reddit <a href="https://www.reddit.com/prefs/apps/">here</a> if you change your mind.
     </p>
     <p><button (click)="login()">Login</button></p>
+    <br/>
+    <br/>
+    <app-delete></app-delete>
 </ng-template>
 
