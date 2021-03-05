@@ -10,6 +10,21 @@
     margin: .25em;
 }
 
+.delete-option input[type=checkbox] {
+    width: 30px;
+}
+
+.delete-option input {
+    width: 120px;
+}
+
+ .delete-option label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+
+
 
 .comment-container {
     display: flex;

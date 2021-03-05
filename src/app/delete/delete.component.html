@@ -2,17 +2,17 @@
     <div class="delete-options">
         <div class="delete-option">
             <input type="checkbox" [(ngModel)]='comment.useLimit' />
-            <label for="lessThan">Less than: </label>
+            <label for="lessThan">Less than:&nbsp;&nbsp;</label>
             <input #lessThan name="lessThan"  type="number" [(ngModel)]='comment.scoreLimit' />
         </div>
         <div class="delete-option">
             <input type="checkbox" [(ngModel)]='comment.useEarlierThan' />
-            <label for="earlierThan">Earlier than: </label>
+            <label for="earlierThan">Earlier than:&nbsp;&nbsp;</label>
             <input name="earlierThan"  type="date" [ngModel]="comment.earlierThan | date:'yyyy-MM-dd'" (ngModelChange)="comment.earlierThan = toDate($event)" />
         </div>
         <div class="delete-option">
             <input type="checkbox" [(ngModel)]='comment.useLaterThan' />
-            <label for="useLaterThan">Later than: </label>
+            <label for="useLaterThan">Later than:&nbsp;&nbsp;</label>
             <input name="useLaterThan"  type="date" [ngModel]="comment.laterThan | date:'yyyy-MM-dd'" (ngModelChange)="comment.laterThan = toDate($event)" />
         </div>
         
