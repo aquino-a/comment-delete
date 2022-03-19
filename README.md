@@ -22,9 +22,10 @@ Comment Delete is a web tool for deleting your Reddit comments.
 First, create `run.bat` / `run.sh` following `run.bat.sample` 
 Fill in the correct data for the node server. This is the startup script that runs the node server.
 It also has all of the required runtime arguments like redirect url and reddit application client id.
+Change the `build` script in `package.json` to 'sh run.sh' if using linux.
 
 Second, create `environment.ts` following `environment.ts.sample`
-Fill in the correct data for the angular app. This contains the reddit client id
+Fill in the correct data for the angular app. This contains the reddit client id.
 
 Make sure to install the dependencies like so:
  ```sh
@@ -32,7 +33,7 @@ Make sure to install the dependencies like so:
  ```
 Then you can build the project:
  ```sh
- ng build
+ ng run-script build
  ```
 
 #### Start
