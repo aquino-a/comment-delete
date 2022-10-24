@@ -1,0 +1,1 @@
+node server.js --clientId=$CD_ID --clientSecret=$CD_SECRET --port=$CD_PORT --origin=$CD_ORIGIN  --redirect=$CD_REDIRECT --app-folder=/home/comment-delete
