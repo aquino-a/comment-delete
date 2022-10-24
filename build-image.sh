@@ -2,7 +2,9 @@
 npm install
 npm run-script build
 
-microcontainer=$(buildah from redhat/ubi8-micro:latest)
+source set-secrets.sh
+
+microcontainer=$(buildah from docker.io/redhat/ubi8-micro:latest)
 micromount=$(buildah mount $microcontainer)
 dnf --installroot $micromount \
 	--setopt=reposdir=/etc/yum.repos.d \
@@ -12,7 +14,7 @@ dnf --installroot $micromount \
 dnf --installroot $micromount clean all
 buildah copy $microcontainer './dist/comment-delete' '/home/comment-delete' 
 buildah copy $microcontainer './server/server.js' '/home/comment-delete/server.js' 
-buildah copy $microcontainer './server/run.js' '/home/comment-delete/run.sh'
+buildah copy $microcontainer './server/run.sh' '/home/comment-delete/run.sh'
 
 buildah config --env CD_ID=$CD_ID $microcontainer
 buildah config --env CD_ID=$CD_SECRET $microcontainer
