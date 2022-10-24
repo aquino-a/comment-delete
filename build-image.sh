@@ -1,6 +1,6 @@
 #!/bin/bash
 npm install
-ng run-script build
+npm run-script build
 
 microcontainer=$(buildah from redhat/ubi8-micro:latest)
 micromount=$(buildah mount $microcontainer)
