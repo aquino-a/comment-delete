@@ -1,6 +1,6 @@
 #!/bin/bash
-# npm install
-# npm run-script build
+npm install
+npm run-script build
 
 source ./set-secrets.sh
 
