@@ -50,3 +50,4 @@ environment.prod.ts
 index.prod.html
 run.bat
 run.sh
+set-secrets.sh
