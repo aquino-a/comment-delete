@@ -9,8 +9,9 @@ micromount=$(buildah mount $microcontainer)
 
 buildah copy $microcontainer './dist/comment-delete' '/home/comment-delete' 
 buildah copy $microcontainer './server/server.js' '/home/comment-delete/server.js' 
+buildah copy $microcontainer './server/package.json' '/home/comment-delete/package.json' 
 
-npm install express minimist --prefix $micromount/home/comment-delete
+npm install --prefix $micromount/home/comment-delete
 
 buildah config --env CD_ID=$CD_ID $microcontainer
 buildah config --env CD_SECRET=$CD_SECRET $microcontainer
