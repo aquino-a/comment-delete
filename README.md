@@ -21,9 +21,9 @@ Comment Delete is a web tool for deleting your Reddit comments.
 
 First, create a `./set-secrets.sh` script based on `./set-secrets.sh.sample`.
 
-Second, create `environment.ts` following `environment.ts.sample`.
+Second, create `environment.prod.ts` following `environment.ts.sample`.
 
-Change the base href in the `package.json` `build` script if needed.
+Change the base href in the `package.json` `build-prod` script if needed.
 
 Run `./build-image.sh` to build an image based on ubi8/nodejs-minimal.
 
